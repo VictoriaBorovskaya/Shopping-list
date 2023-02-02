@@ -6,62 +6,62 @@ import Input from 'components/Input';
 import { useState } from 'react';
 
 const App = () => {
-  const [purchases, setPurchases] = useState([])
-  const [list, setList] = useState([])
+  const [purchases, setPurchases] = useState(localStorage.getItem('purchases') ? JSON.parse(localStorage.getItem('purchases')) : [])
   const [userInput, setUserInput] = useState('')
+
+  // для сохранения в localStorage
+  const setPurchasesSave = (newPurchases) => {
+    setPurchases(newPurchases)
+    localStorage.setItem('purchases', JSON.stringify(newPurchases))
+  }
 
   // функция добавления новой покупки в список с помощью input
   const addNewPurchase = (element) => {
     let maxId = purchases.reduce((max, purchase) => purchase.id > max ? purchase.id : max, 0) 
     let purchaseId = maxId + 1
-    const newPurchase = {
+    let newPurchase = {
       id: purchaseId,
       name: userInput,
+      isChecked: false
     }
     element.preventDefault()
       if(userInput.trim() !== '') {
-        setPurchases([...purchases, newPurchase])
+        const purchaseJSON = localStorage.getItem('purchases')
+        JSON.parse(purchaseJSON)
+        setPurchasesSave([...purchases, newPurchase])
         setUserInput("")
       }
   }
 
-  // функция удаления покупки из общего списка
+  // функция удаления покупки из списка
   const deletePurchase = (id) => {
     const filteredPurchase = purchases.filter(purchase => purchase.id !== id)
-    setPurchases(filteredPurchase)
-    setList(filteredPurchase)
+    setPurchasesSave(filteredPurchase)
   }
 
-  // функция добавления покупок в раздел добавленных
+  //функция добавления/удаления покупки в корзину
   const addToList = (id) => {
-    const findPurchase = purchases.find((purchase) => {
-      return purchase.id === id
-    })
-    const findToList = list.find((findPurchase) => {
-      return findPurchase.id === id
-    })
-    if(!findToList) {
-      setList([...list, findPurchase])
-    }
-  }
-
-  // функция удаления из списка добавленных
-  const removeFromList = (id) => {
-    const filteredList = list.filter(purchase => purchase.id !== id)
-    setList(filteredList)
+    setPurchasesSave(
+      purchases.map((purchase) => {
+        if(purchase.id === id) {
+          return {...purchase, isChecked: !purchase.isChecked}
+        }
+        return purchase
+      })
+    )
   }
 
   return (
     <div className='bg-zinc-50 max-h-screen'>
       <Header /> 
       <Input  addNewPurchase={addNewPurchase} userInput={userInput} setUserInput={setUserInput} />
-      <div className='pb-20 min-h-[60vh] max-h-screen bg-zinc-50'>
-        { purchases.length === 0 && (<div className='max-w-3xl mx-auto text-2xl font-semibold text-center'>В Вашем списке отсутсвуют запланированные покупки</div>)}
+      <div className='pb-20 min-h-[40vh] sm:min-h-[60vh] max-h-screen bg-zinc-50'>
+        { purchases.length === 0 && (<div className='max-w-3xl mx-auto text-xl sm:text-2xl font-semibold text-center px-2'>В Вашем списке отсутсвуют запланированные покупки</div>)}
         { purchases.length > 0 && purchases.map((purchase) => 
-          <Card key={purchase.id} purchase={purchase} purchases={purchases} list={list} deletePurchase={deletePurchase} addToList={addToList} removeFromList={removeFromList} />
+          <Card key={purchase.id} purchase={purchase} purchases={purchases} deletePurchase={deletePurchase} addToList={addToList} />
         ) }
       </div>
-      <Footer total={purchases.length} сount={list.length} />
+      <Footer purchases={purchases}  />
     </div>
   )
 }
