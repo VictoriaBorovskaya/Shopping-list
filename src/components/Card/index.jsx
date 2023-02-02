@@ -10,7 +10,7 @@ const Card = (props) => {
                 <div className="flex gap-5">
                     { purchase.isChecked === true && (
                         <button onClick={() => addToList(purchase.id)} className="text-white font-semibold border border-cyan-500 bg-cyan-500 rounded p-2 hover:bg-cyan-600 hover:border-cyan-600 duration-500 h-10 sm:h-11">
-                            Добавлено!
+                            Куплено!
                         </button>)
                     }
                     { purchase.isChecked === false && (
