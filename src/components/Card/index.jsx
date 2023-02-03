@@ -5,12 +5,12 @@ const Card = (props) => {
 
     return (
         <div className="max-w-3xl mx-auto">
-            <div className="flex justify-between px-2 py-5 sm:p-5 hover:bg-zinc-100 border-b-2 border-zinc-300">
+            <div className="flex justify-between px-2 py-5 sm:p-5 hover:bg-zinc-200 border-b-2 border-zinc-400">
                 <p className="text-xl sm:text-2xl font-semibold w-1/2"><span className="text-xl">{ count }.</span> { purchase.name }</p>
                 <div className="flex gap-5">
                     { purchase.isChecked === true && (
                         <button onClick={() => addToList(purchase.id)} className="text-white font-semibold border border-cyan-500 bg-cyan-500 rounded p-2 hover:bg-cyan-600 hover:border-cyan-600 duration-500 h-10 sm:h-11">
-                            Куплено!
+                            В корзине!
                         </button>)
                     }
                     { purchase.isChecked === false && (
