@@ -1,7 +1,24 @@
-const Card = (props) => {
-    const { purchase, purchases, addToList, deletePurchase } = props
+const Card = ({purchase, purchases, setPurchasesSave}) => {
     let index = purchases.indexOf(purchase)
     let count = index + 1
+
+    // функция удаления покупки из списка
+    const deletePurchase = (id) => {
+        const filteredPurchase = purchases.filter(purchase => purchase.id !== id)
+        setPurchasesSave(filteredPurchase)
+    }
+
+    //функция добавления/удаления покупки в корзину
+    const addToList = (id) => {
+        setPurchasesSave(
+            purchases.map((purchase) => {
+                if(purchase.id === id) {
+                return {...purchase, isChecked: !purchase.isChecked}
+                }
+                return purchase
+            })
+        )
+    }
 
     return (
         <div className="max-w-3xl mx-auto">

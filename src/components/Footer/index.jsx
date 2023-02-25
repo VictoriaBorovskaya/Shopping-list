@@ -1,5 +1,4 @@
-const Footer = (props) => {
-  const { purchases } = props
+const Footer = ({purchases}) => {
   const filteredPurchase = purchases.filter((purchase) => purchase.isChecked === true)
 
   return(
