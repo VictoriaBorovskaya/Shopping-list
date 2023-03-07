@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { v4 as uuidv4 } from 'uuid';
 
-const Input = ({addNewPurchase, purchases}) => {
+
+const Input = ({addNewPurchase}) => {
     const [userInput, setUserInput] = useState('')
     const onChange = (element) => {
       setUserInput(element.target.value)
@@ -9,10 +11,9 @@ const Input = ({addNewPurchase, purchases}) => {
     //для добавления новой покупки в список
     const handleClick = (element) => {
       element.preventDefault()
-      let maxId = purchases.reduce((max, purchase) => purchase.id > max ? purchase.id : max, 0) 
-      let purchaseId = maxId + 1
+
       let newPurchase = {
-        id: purchaseId,
+        id: uuidv4(),
         name: userInput,
         isChecked: false
       }

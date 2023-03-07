@@ -1,16 +1,16 @@
-const Card = ({purchase, purchases, setPurchasesSave}) => {
+const Card = ({purchase, purchases, setPurchases}) => {
     let index = purchases.indexOf(purchase)
     let count = index + 1
 
     // функция удаления покупки из списка
     const deletePurchase = (id) => {
         const filteredPurchase = purchases.filter(purchase => purchase.id !== id)
-        setPurchasesSave(filteredPurchase)
+        setPurchases(filteredPurchase)
     }
 
     //функция добавления/удаления покупки в корзину
     const addToList = (id) => {
-        setPurchasesSave(
+        setPurchases(
             purchases.map((purchase) => {
                 if(purchase.id === id) {
                 return {...purchase, isChecked: !purchase.isChecked}
